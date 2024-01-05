@@ -23,7 +23,6 @@ npx cypress run --spec "cypress/tests/buytickets.cy.js"
 - dear lord the usability around date picker
   - entering date by typing on return date does a reservation
   - return date could start at month of depart date (always start in january)
-- mobile doesn't have
 
 ## Task 3
 - please give test-data attributes and not this horrendous selector nonsense
