@@ -28,6 +28,9 @@ Cypress.Commands.add('enterPurchaseTicketData', (departCity, returnCity, dates) 
   cy.get('#searchTimetableForm > div > div:nth-child(1) > div:nth-child(3) > div > ul > li > a')
     .contains(departCity).click()
 
+  //TODO: rework date selection
+  // - depart date prioritizes time
+  // - return date mimics clicking through months if necessary (also because you have to)
   cy.get('#arrival-date').type(returnCity)
   cy.get('#searchTimetableForm > div > div:nth-child(1) > div:nth-child(4) > div > ul > li.active > a')
     .contains(returnCity).click()
@@ -42,13 +45,12 @@ Cypress.Commands.add('enterPurchaseTicketData', (departCity, returnCity, dates) 
     cy.get('#datepicker-second_root > div > div > div > div > div.picker__header > div.picker__nav--next').click()
   }
   cy.get('#datepicker-second_table').contains(exactReturnDateRegex).click()
-
-
 })
 
 Cypress.Commands.add('buyTicketDateFormatted', (departDate, returnDate) => {
   let delta = 0
 
+  //TODO: utilize formatDate, first glance nesting will get nasty
   let departDay = departDate.getDate()
   let departMonth = departDate.toLocaleString('default', { month: 'long' });
   let departYear = departDate.getFullYear()
@@ -60,9 +62,18 @@ Cypress.Commands.add('buyTicketDateFormatted', (departDate, returnDate) => {
   let formattedReturnDate = returnDay + " " + returnMonth + ", " + returnYear
 
   //dates getMonth returns 0-11
+  //TODO: Still need to handle edge case Nov-Feb case
   delta = returnDate.getMonth()
 
   return cy.wrap({'departDate': formattedDepartDate, 'returnDate': formattedReturnDate, 'delta': delta})
+})
+
+Cypress.Commands.add('formatDate', (date) => {
+  let day = date.getDate()
+  let month = date.toLocaleString('default', { month: 'long' });
+  let year = date.getFullYear()
+  let formattedDate = day + " " + month + ", " + year
+  return cy.wrap(formattedDate)
 })
 //
 //
