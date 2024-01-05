@@ -6,9 +6,14 @@ describe('Buy Tickets', () => {
     cy.dismissCookie();
   })
 
-  it('Cancel Ticket Purchase Before Payment', () => {
+  it('Cancel Ticket Purchase Before Payment ', () => {
     const today = new Date()
-    cy.enterPurchaseTicketData('Lagos', 3, 'Porto - Campanha', 5)
+    cy.buyTicketDateFormatted(
+      new Date(today.getFullYear(), today.getMonth(), today.getDate()+30),
+      new Date(today.getFullYear(), today.getMonth(), today.getDate()+35))
+      .then((dates) => {
+        cy.enterPurchaseTicketData('Lagos', 'Porto - Campanha', dates)
+      })
   })
 
   // buyTicketData.forEach((reservation) => {
